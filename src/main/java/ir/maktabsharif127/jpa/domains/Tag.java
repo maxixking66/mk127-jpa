@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = Tag.TABLE_NAME)
 @Setter
 @Getter
 @NoArgsConstructor
+@ToString
 public class Tag {
 
     public static final String TABLE_NAME = "tb_tag";
@@ -18,7 +20,11 @@ public class Tag {
     public static final String IS_ACTIVE = "is_active";
 
     @Id
-    @GeneratedValue
+    @SequenceGenerator(
+            name = "my_tag_seq_gen",
+            allocationSize = 5
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_tag_seq_gen")
     private Long id;
 
     //    alter table tb_tab add column name varchar
