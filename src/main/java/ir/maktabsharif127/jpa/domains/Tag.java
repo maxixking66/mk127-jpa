@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Set;
+
 @Entity
 @Table(name = Tag.TABLE_NAME)
 @Setter
@@ -34,4 +36,15 @@ public class Tag {
     @Column(name = IS_ACTIVE)
     private Boolean isActive;
 
+    @OneToOne
+    private Tag tag;
+
+    @ManyToOne
+    private Tag sTag;
+
+    @OneToMany
+    private Set<Tag> tags;
+
+    @ManyToMany
+    private Set<Tag> manyTags;
 }
