@@ -1,9 +1,6 @@
 package ir.maktabsharif127.jpa.domains;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +18,7 @@ public class Tag {
     public static final String IS_ACTIVE = "is_active";
 
     @Id
+    @GeneratedValue
     private Long id;
 
     //    alter table tb_tab add column name varchar
