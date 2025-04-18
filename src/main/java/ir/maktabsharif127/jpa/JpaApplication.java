@@ -13,14 +13,9 @@ public class JpaApplication {
 
         entityManager.getTransaction().begin();
 
-        Tag tag = new Tag();
-        tag.setName("first");
-        tag.setIsActive(true);
-
-        entityManager.persist(tag); /*managed*/
+        Tag tag = entityManager.find(Tag.class, 1L);
 
         tag.setName("second");
-//        entityManager.persist(tag);
 
         entityManager.getTransaction().commit();
 
