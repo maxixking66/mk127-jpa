@@ -29,7 +29,15 @@ public class Province extends BaseEntity<Long> {
     private String preCode;
 
     //    @OneToMany(mappedBy = "province")
-    @OneToMany
-    @JoinColumn(name = "p_id")
+//    @OneToMany
+//    @JoinColumn(name = "p_id")
+//    private Set<City> cities;
+
+    @ManyToMany
+    @JoinTable(
+            name = "p_c",
+            joinColumns = @JoinColumn(name = "p_id"),
+            inverseJoinColumns = @JoinColumn(name = "c_id")
+    )
     private Set<City> cities;
 }
