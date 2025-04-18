@@ -26,5 +26,6 @@ public class City extends BaseEntity<Long> {
     private String name;
 
     @ManyToOne(optional = false)
+//    @JoinColumn(name = "province_name", referencedColumnName = Province.NAME)
     private Province province;
 }
