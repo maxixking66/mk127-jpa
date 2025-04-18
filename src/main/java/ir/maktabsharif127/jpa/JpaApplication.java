@@ -13,14 +13,10 @@ public class JpaApplication {
 
         entityManager.getTransaction().begin();
 
-        Tag tag = entityManager.find(Tag.class, 2L);
-
-        System.out.println("1)tag name:" + tag.getName());
-
-        tag.setName(tag.getName() + " - " + tag.getName());
-        System.out.println("2)tag name:" + tag.getName());
-        entityManager.refresh(tag);
-        System.out.println("3)tag name:" + tag.getName());
+        Tag tag = new Tag();
+        tag.setName("1234");
+        tag.setIsActive(false);
+        entityManager.persist(tag);
 
         entityManager.getTransaction().commit();
 
