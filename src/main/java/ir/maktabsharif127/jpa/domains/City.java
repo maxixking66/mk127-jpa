@@ -25,6 +25,6 @@ public class City extends BaseEntity<Long> {
     @Column(name = NAME)
     private String name;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Province province;
 }
