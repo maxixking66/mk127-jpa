@@ -13,19 +13,14 @@ public class JpaApplication {
 
         entityManager.getTransaction().begin();
 
-        Tag tag = new Tag();
-        tag.setName("new with merge 2");
-        tag.setIsActive(true);
+        Tag tag = entityManager.find(Tag.class, 2L);
 
-        System.out.println("before merge: " + entityManager.contains(tag));
+        System.out.println("1)tag name:" + tag.getName());
 
-        Tag merge = entityManager.merge(tag);/*managed*/
-//        tag = entityManager.merge(tag);/*managed*/
-
-        System.out.println("after merge: " + entityManager.contains(tag));
-        System.out.println("after merge and return type of merge method: " + entityManager.contains(merge));
-        merge.setName("merge return type");
-//        entityManager.persist(tag);
+        tag.setName(tag.getName() + " - " + tag.getName());
+        System.out.println("2)tag name:" + tag.getName());
+        entityManager.refresh(tag);
+        System.out.println("3)tag name:" + tag.getName());
 
         entityManager.getTransaction().commit();
 
