@@ -19,7 +19,8 @@ public class JpaApplication {
 
         entityManager.getTransaction().begin();
 
-        insertNewProvinceAndCities(entityManager, 2);
+        Province province = entityManager.find(Province.class, 252L);
+        entityManager.remove(province);
 
         entityManager.getTransaction().commit();
         entityManager.close();

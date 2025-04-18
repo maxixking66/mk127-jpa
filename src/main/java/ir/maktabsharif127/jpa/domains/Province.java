@@ -28,6 +28,6 @@ public class Province extends BaseEntity<Long> {
     @Column(name = PRE_CODE)
     private String preCode;
 
-    @OneToMany(mappedBy = "province", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "province", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<City> cities;
 }
