@@ -6,6 +6,8 @@ import ir.maktabsharif127.jpa.domains.City;
 import ir.maktabsharif127.jpa.domains.Province;
 import jakarta.persistence.EntityManager;
 
+import java.util.List;
+
 public class JpaApplication {
 
     private static final Faker faker = new Faker();
@@ -15,13 +17,11 @@ public class JpaApplication {
 
         EntityManager entityManager = applicationContext.getEntityManager();
 
-        entityManager.getTransaction().begin();
-
-        for (int i = 0; i < 5; i++) {
-            insertNewProvinceAndCities(entityManager, 3);
-        }
-
-        entityManager.getTransaction().commit();
+        List<City> entities =
+                entityManager.createQuery("from City", City.class)
+                        .getResultList();
+        System.out.println("entities size: " + entities.size());
+        entities.forEach(city -> System.out.println(city.getId() + ")" + city.getProvince().getName()));
 
         entityManager.close();
     }
