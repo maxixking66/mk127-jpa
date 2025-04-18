@@ -1,7 +1,10 @@
 package ir.maktabsharif127.jpa.domains;
 
 import ir.maktabsharif127.jpa.domains.base.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,16 +31,6 @@ public class Province extends BaseEntity<Long> {
     @Column(name = PRE_CODE)
     private String preCode;
 
-    //    @OneToMany(mappedBy = "province")
-//    @OneToMany
-//    @JoinColumn(name = "p_id")
-//    private Set<City> cities;
-
-    @ManyToMany
-    @JoinTable(
-            name = "p_c",
-            joinColumns = @JoinColumn(name = "p_id"),
-            inverseJoinColumns = @JoinColumn(name = "c_id")
-    )
+    @OneToMany(mappedBy = "province")
     private Set<City> cities;
 }

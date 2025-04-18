@@ -3,6 +3,7 @@ package ir.maktabsharif127.jpa.domains;
 import ir.maktabsharif127.jpa.domains.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,4 +28,11 @@ public class Address extends BaseEntity<Long> {
 
     @Column(name = POSTAL_CODE, length = 10)
     private String postalCode;
+
+    @ManyToOne(optional = false)
+    private City city;
+
+    @ManyToOne(optional = false)
+    private User user;
+
 }
