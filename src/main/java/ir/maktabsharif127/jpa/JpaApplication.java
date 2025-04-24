@@ -2,10 +2,8 @@ package ir.maktabsharif127.jpa;
 
 import com.github.javafaker.Faker;
 import ir.maktabsharif127.jpa.config.ApplicationContext;
-import ir.maktabsharif127.jpa.domains.City;
-import ir.maktabsharif127.jpa.domains.Province;
+import ir.maktabsharif127.jpa.domains.*;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 
 import java.util.HashSet;
 
@@ -20,13 +18,12 @@ public class JpaApplication {
 
         entityManager.getTransaction().begin();
 
-        TypedQuery<City> typedQuery = entityManager.createQuery("from City order by id desc", City.class);
-//        order(sort) & page & size
-//        offset = page * size
-        typedQuery.setFirstResult(5);/*offset*/
-        typedQuery.setMaxResults(5);/*size, limit*/
+        entityManager.persist(new Admin());
+        entityManager.persist(new Customer());
+        entityManager.persist(new User());
 
-        System.out.println(typedQuery.getResultList().stream().map(City::getId).toList());
+        entityManager.createQuery("from Customer").getResultList();
+        entityManager.createQuery("from Admin").getResultList();
 
         entityManager.getTransaction().commit();
         entityManager.close();

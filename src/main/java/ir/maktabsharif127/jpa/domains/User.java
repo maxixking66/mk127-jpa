@@ -8,15 +8,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = User.TABLE_NAME)
 @Setter
 @Getter
 @NoArgsConstructor
 @ToString
+@Inheritance()
 public class User extends BaseEntity<Long> {
 
     public static final String TABLE_NAME = "users";
@@ -41,20 +39,4 @@ public class User extends BaseEntity<Long> {
     @Column(name = USER_TYPE)
     @Enumerated(EnumType.STRING)
     private UserType userType;
-
-    @Embedded
-    private UserAddress address;
-
-    @ElementCollection
-    private Set<UserAddress> userAddresses = new HashSet<>();
-
-//    private String address;
-//    private String postalCode;
-//    private String city;
-//    private String province;
-
-    @ElementCollection
-    @CollectionTable(name = "u_p", joinColumns = @JoinColumn(name = "u_id"))
-    @Column(name = "m_n")
-    private Set<String> mobileNumbers = new HashSet<>();
 }
