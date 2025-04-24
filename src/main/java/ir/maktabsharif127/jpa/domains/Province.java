@@ -30,4 +30,7 @@ public class Province extends BaseEntity<Long> {
 
     @OneToMany(mappedBy = "province", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<City> cities;
+
+//    @ManyToOne
+//    private Address address;
 }

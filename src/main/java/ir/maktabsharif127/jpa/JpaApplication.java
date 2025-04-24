@@ -34,6 +34,9 @@ public class JpaApplication {
 //        EntityGraph<?> entityGraph = entityManager.createEntityGraph("city-graph");
         EntityGraph<City> cityEntityGraph = entityManager.createEntityGraph(City.class);
         cityEntityGraph.addAttributeNodes(City_.PROVINCE);
+//        Subgraph<Province> provinceSubgraph = cityEntityGraph.addSubgraph(City_.province);
+//        provinceSubgraph.addAttributeNodes(Province_.address);
+
 
         typedQuery.setHint(
                 "jakarta.persistence.fetchgraph",
