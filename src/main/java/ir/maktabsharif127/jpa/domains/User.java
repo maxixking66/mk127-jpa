@@ -14,7 +14,7 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @ToString
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class User extends BaseEntity<Long> {
 
     public static final String TABLE_NAME = "users";
