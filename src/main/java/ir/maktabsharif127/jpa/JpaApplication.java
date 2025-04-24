@@ -18,9 +18,15 @@ public class JpaApplication {
 
         entityManager.getTransaction().begin();
 
-        entityManager.persist(new Admin());
-        entityManager.persist(new Customer());
-        entityManager.persist(new User());
+        Admin admin = new Admin();
+        admin.setFirstName("admin");
+        entityManager.persist(admin);
+        Customer customer = new Customer();
+        customer.setFirstName("customer");
+        entityManager.persist(customer);
+        User user = new User();
+        user.setFirstName("user");
+        entityManager.persist(user);
 
         entityManager.createQuery("from Customer").getResultList();
         entityManager.createQuery("from Admin").getResultList();
