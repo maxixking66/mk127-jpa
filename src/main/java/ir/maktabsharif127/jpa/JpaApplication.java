@@ -3,6 +3,7 @@ package ir.maktabsharif127.jpa;
 import com.github.javafaker.Faker;
 import ir.maktabsharif127.jpa.config.ApplicationContext;
 import ir.maktabsharif127.jpa.domains.Customer;
+import ir.maktabsharif127.jpa.domains.Customer_;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -90,7 +91,7 @@ public class JpaApplication {
         if (StringUtils.isNotBlank(firstName)) {
             predicates.add(
                     cb.like(
-                            root.get("firstName"),
+                            root.get(Customer_.firstName),
                             "%" + firstName + "%"
                     )
             );
@@ -102,7 +103,7 @@ public class JpaApplication {
         if (StringUtils.isNotBlank(lastName)) {
             predicates.add(
                     cb.like(
-                            root.get("lastName"),
+                            root.get(Customer_.LAST_NAME),
                             "%" + lastName + "%"
                     )
             );
@@ -114,7 +115,7 @@ public class JpaApplication {
         if (StringUtils.isNotBlank(code)) {
             predicates.add(
                     cb.like(
-                            root.get("code"),
+                            root.get(Customer_.code),
                             "%" + code + "%"
                     )
             );
