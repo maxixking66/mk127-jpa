@@ -2,7 +2,8 @@ package ir.maktabsharif127.jpa;
 
 import com.github.javafaker.Faker;
 import ir.maktabsharif127.jpa.config.ApplicationContext;
-import ir.maktabsharif127.jpa.domains.*;
+import ir.maktabsharif127.jpa.domains.City;
+import ir.maktabsharif127.jpa.domains.Province;
 import jakarta.persistence.EntityManager;
 
 import java.util.HashSet;
@@ -18,18 +19,9 @@ public class JpaApplication {
 
         entityManager.getTransaction().begin();
 
-        Admin admin = new Admin();
-        admin.setFirstName("admin");
-        entityManager.persist(admin);
-        Customer customer = new Customer();
-        customer.setFirstName("customer");
-        entityManager.persist(customer);
-        User user = new User();
-        user.setFirstName("user");
-        entityManager.persist(user);
-
-        entityManager.createQuery("from Customer").getResultList();
-        entityManager.createQuery("from Admin").getResultList();
+        System.out.println("customer size: " + entityManager.createQuery("from Customer").getResultList().size());
+        System.out.println("admin size: " + entityManager.createQuery("from Admin").getResultList().size());
+        System.out.println("User size: " + entityManager.createQuery("from User").getResultList().size());
 
         entityManager.getTransaction().commit();
         entityManager.close();
