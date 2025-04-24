@@ -5,6 +5,7 @@ import ir.maktabsharif127.jpa.config.ApplicationContext;
 import ir.maktabsharif127.jpa.domains.City;
 import ir.maktabsharif127.jpa.domains.Province;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
 import java.util.HashSet;
 
@@ -19,15 +20,13 @@ public class JpaApplication {
 
         entityManager.getTransaction().begin();
 
-//        User user = new User();
-//        user.setFirstName("mat");
-//        user.setLastName("mat");
-//        user.setUsername("mat");
-//        user.setPassword("mat");
-//        user.setUserType(UserType.REAL);
-//        entityManager.persist(user);
+        TypedQuery<City> typedQuery = entityManager.createQuery("from City order by id desc", City.class);
+//        order(sort) & page & size
+//        offset = page * size
+        typedQuery.setFirstResult(5);/*offset*/
+        typedQuery.setMaxResults(5);/*size, limit*/
 
-//        entityManager.find(User.class, 1L).setUserType(UserType.NEW_ONE);
+        System.out.println(typedQuery.getResultList().stream().map(City::getId).toList());
 
         entityManager.getTransaction().commit();
         entityManager.close();
