@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = User.TABLE_NAME)
 @Setter
@@ -38,4 +41,9 @@ public class User extends BaseEntity<Long> {
     @Column(name = USER_TYPE)
     @Enumerated(EnumType.STRING)
     private UserType userType;
+
+    @ElementCollection
+    @CollectionTable(name = "u_p", joinColumns = @JoinColumn(name = "u_id"))
+    @Column(name = "m_n")
+    private Set<String> mobileNumbers = new HashSet<>();
 }
