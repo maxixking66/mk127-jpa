@@ -2,8 +2,8 @@ package ir.maktabsharif127.jpa;
 
 import com.github.javafaker.Faker;
 import ir.maktabsharif127.jpa.config.ApplicationContext;
-import ir.maktabsharif127.jpa.domains.Customer;
-import ir.maktabsharif127.jpa.domains.Customer_;
+import ir.maktabsharif127.jpa.domains.*;
+import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -17,6 +17,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class JpaApplication {
@@ -28,27 +29,21 @@ public class JpaApplication {
 
         EntityManager entityManager = applicationContext.getEntityManager();
 
+        TypedQuery<City> typedQuery = entityManager.createQuery("from City", City.class);
 
-//        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-//        CriteriaQuery<Customer> query = cb.createQuery(Customer.class);
-//        Root<Customer> root = query.from(Customer.class);
-//        query.select(root);
-//
-//        TypedQuery<Customer> typedQuery = entityManager.createQuery(query);
-////        add firstResult/maxResult
-//        System.out.println(typedQuery.getResultList().size());
+//        EntityGraph<?> entityGraph = entityManager.createEntityGraph("city-graph");
+        EntityGraph<City> cityEntityGraph = entityManager.createEntityGraph(City.class);
+        cityEntityGraph.addAttributeNodes(City_.PROVINCE);
 
+        typedQuery.setHint(
+                "jakarta.persistence.fetchgraph",
+//                "jakarta.persistence.loadgraph",
+                cityEntityGraph
+        );
 
-        CustomerSearch search = new CustomerSearch();
-        System.out.println("empty search: " + findAll(entityManager, search).size());
-//
-        search.setFirstName("cu");
-        System.out.println("cu firstName search: " + findAll(entityManager, search).size());
-        search.setFirstName("ad");
-        System.out.println("ad firstName search: " + findAll(entityManager, search).size());
-        search.setFirstName("cu");
-        search.setLastName("cu");
-        System.out.println("cu firstName & cu lastName search: " + findAll(entityManager, search).size());
+        List<City> resultList = typedQuery.getResultList();
+        System.out.println("resultList is fetched");
+        resultList.forEach(city -> System.out.println(city.getProvince().getName()));
 
         entityManager.close();
     }
@@ -120,6 +115,31 @@ public class JpaApplication {
                     )
             );
         }
+    }
+
+    private static void insertNewProvinceAndCities(EntityManager entityManager, int count) {
+        Province province = getNewProvince();
+        for (int i = 0; i < count; i++) {
+            City city = getNewCity();
+            city.setProvince(province);
+//            entityManager.persist(city);
+            province.getCities().add(city);
+        }
+        entityManager.persist(province);
+    }
+
+    private static Province getNewProvince() {
+        Province province = new Province();
+        province.setName(faker.name().title());
+        province.setPreCode(faker.number().digits(3));
+        province.setCities(new HashSet<>());
+        return province;
+    }
+
+    private static City getNewCity() {
+        City city = new City();
+        city.setName(faker.name().title());
+        return city;
     }
 
 }
