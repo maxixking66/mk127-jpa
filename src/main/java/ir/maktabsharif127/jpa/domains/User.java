@@ -42,6 +42,17 @@ public class User extends BaseEntity<Long> {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
+    @Embedded
+    private UserAddress address;
+
+    @ElementCollection
+    private Set<UserAddress> userAddresses = new HashSet<>();
+
+//    private String address;
+//    private String postalCode;
+//    private String city;
+//    private String province;
+
     @ElementCollection
     @CollectionTable(name = "u_p", joinColumns = @JoinColumn(name = "u_id"))
     @Column(name = "m_n")
