@@ -4,6 +4,8 @@ import com.github.javafaker.Faker;
 import ir.maktabsharif127.jpa.config.ApplicationContext;
 import ir.maktabsharif127.jpa.domains.City;
 import ir.maktabsharif127.jpa.domains.Province;
+import ir.maktabsharif127.jpa.domains.User;
+import ir.maktabsharif127.jpa.domains.enumerations.UserType;
 import jakarta.persistence.EntityManager;
 
 import java.util.HashSet;
@@ -19,8 +21,15 @@ public class JpaApplication {
 
         entityManager.getTransaction().begin();
 
-        Province province = entityManager.find(Province.class, 252L);
-        entityManager.remove(province);
+//        User user = new User();
+//        user.setFirstName("mat");
+//        user.setLastName("mat");
+//        user.setUsername("mat");
+//        user.setPassword("mat");
+//        user.setUserType(UserType.REAL);
+//        entityManager.persist(user);
+
+        entityManager.find(User.class, 1L).setUserType(UserType.NEW_ONE);
 
         entityManager.getTransaction().commit();
         entityManager.close();

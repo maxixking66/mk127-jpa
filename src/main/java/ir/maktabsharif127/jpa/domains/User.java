@@ -1,9 +1,8 @@
 package ir.maktabsharif127.jpa.domains;
 
 import ir.maktabsharif127.jpa.domains.base.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import ir.maktabsharif127.jpa.domains.enumerations.UserType;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,8 +19,9 @@ public class User extends BaseEntity<Long> {
     public static final String TABLE_NAME = "users";
     public static final String FIRST_NAME = "first_name";
     public static final String LAST_NAME = "last_name";
-    public static final String Username = "username";
-    public static final String Password = "password";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+    public static final String USER_TYPE = "user_type";
 
     @Column(name = FIRST_NAME)
     private String firstName;
@@ -29,9 +29,13 @@ public class User extends BaseEntity<Long> {
     @Column(name = LAST_NAME)
     private String lastName;
 
-    @Column(name = Username)
+    @Column(name = USERNAME)
     private String username;
 
-    @Column(name = Password)
+    @Column(name = PASSWORD)
     private String password;
+
+    @Column(name = USER_TYPE)
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
 }
