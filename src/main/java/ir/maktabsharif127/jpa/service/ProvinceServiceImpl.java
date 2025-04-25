@@ -9,4 +9,32 @@ public class ProvinceServiceImpl extends BaseServiceImpl<Province, Long, Provinc
     public ProvinceServiceImpl(ProvinceRepository repository) {
         super(repository);
     }
+
+    @Override
+    public Province save(Province entity) {
+        validateEntity(entity);
+        return super.save(entity);
+    }
+
+    private void validateEntity(Province entity) {
+        validateName(entity);
+//        validatePreCode(entity);
+//        validateSomething(entity);
+    }
+
+    private void validateName(Province entity) {
+        if (entity.getId() == null) {
+            if (repository.existsByName(entity.getName())) {
+                throw new RuntimeException(
+                        "duplicate name for province, name " + entity.getName() + " is already taken"
+                );
+            }
+        } else {
+            if (repository.existsByNameAndIdIsNot(entity.getName(), entity.getId())) {
+                throw new RuntimeException(
+                        "duplicate name for province, name " + entity.getName() + " is already taken"
+                );
+            }
+        }
+    }
 }

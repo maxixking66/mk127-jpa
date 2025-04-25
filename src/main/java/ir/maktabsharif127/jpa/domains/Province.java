@@ -1,7 +1,10 @@
 package ir.maktabsharif127.jpa.domains;
 
 import ir.maktabsharif127.jpa.domains.base.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,7 +31,7 @@ public class Province extends BaseEntity<Long> {
     @Column(name = PRE_CODE)
     private String preCode;
 
-    @OneToMany(mappedBy = "province", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "province")
     private Set<City> cities;
 
 //    @ManyToOne

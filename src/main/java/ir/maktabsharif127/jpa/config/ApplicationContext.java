@@ -1,8 +1,18 @@
 package ir.maktabsharif127.jpa.config;
 
+import ir.maktabsharif127.jpa.repository.CityRepository;
+import ir.maktabsharif127.jpa.repository.CityRepositoryImpl;
+import ir.maktabsharif127.jpa.repository.ProvinceRepository;
+import ir.maktabsharif127.jpa.repository.ProvinceRepositoryImpl;
+import ir.maktabsharif127.jpa.service.CityService;
+import ir.maktabsharif127.jpa.service.CityServiceImpl;
+import ir.maktabsharif127.jpa.service.ProvinceService;
+import ir.maktabsharif127.jpa.service.ProvinceServiceImpl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+
+import java.util.Objects;
 
 public class ApplicationContext {
 
@@ -12,7 +22,7 @@ public class ApplicationContext {
     }
 
     public static ApplicationContext getInstance() {
-        if (applicationContext == null) {
+        if (Objects.isNull(applicationContext)) {
             applicationContext = new ApplicationContext();
         }
         return applicationContext;
@@ -21,7 +31,7 @@ public class ApplicationContext {
     private EntityManagerFactory entityManagerFactory;
 
     public EntityManagerFactory getEntityManagerFactory() {
-        if (entityManagerFactory == null) {
+        if (Objects.isNull(entityManagerFactory)) {
             entityManagerFactory = Persistence.createEntityManagerFactory("default");
         }
         return entityManagerFactory;
@@ -30,9 +40,49 @@ public class ApplicationContext {
     private EntityManager em;
 
     public EntityManager getEntityManager() {
-        if (em == null) {
+        if (Objects.isNull(em)) {
             em = getEntityManagerFactory().createEntityManager();
         }
         return em;
     }
+
+    private ProvinceRepository provinceRepository;
+
+    public ProvinceRepository getProvinceRepository() {
+        if (Objects.isNull(provinceRepository)) {
+            provinceRepository = new ProvinceRepositoryImpl(getEntityManager());
+        }
+        return provinceRepository;
+    }
+
+
+    private CityRepository cityRepository;
+
+    public CityRepository getCityRepository() {
+        if (Objects.isNull(cityRepository)) {
+            cityRepository = new CityRepositoryImpl(getEntityManager());
+        }
+        return cityRepository;
+    }
+
+    private ProvinceService provinceService;
+
+    public ProvinceService getProvinceService() {
+        if (Objects.isNull(provinceService)) {
+            provinceService = new ProvinceServiceImpl(getProvinceRepository());
+        }
+        return provinceService;
+    }
+
+
+    private CityService cityService;
+
+    public CityService getCityService() {
+        if (Objects.isNull(cityService)) {
+            cityService = new CityServiceImpl(getCityRepository());
+        }
+        return cityService;
+    }
+
+
 }

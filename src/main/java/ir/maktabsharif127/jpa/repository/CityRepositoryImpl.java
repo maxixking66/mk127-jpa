@@ -7,7 +7,7 @@ import jakarta.persistence.EntityManager;
 public class CityRepositoryImpl extends SimpleJpaRepository<City, Long>
         implements CityRepository {
 
-    protected CityRepositoryImpl(EntityManager entityManager) {
+    public CityRepositoryImpl(EntityManager entityManager) {
         super(entityManager);
     }
 
