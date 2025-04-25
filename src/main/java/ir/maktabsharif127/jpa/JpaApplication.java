@@ -2,9 +2,7 @@ package ir.maktabsharif127.jpa;
 
 import com.github.javafaker.Faker;
 import ir.maktabsharif127.jpa.config.ApplicationContext;
-import ir.maktabsharif127.jpa.domains.Province;
-
-import java.util.Optional;
+import ir.maktabsharif127.jpa.dto.CityCreationRequest;
 
 public class JpaApplication {
 
@@ -13,17 +11,12 @@ public class JpaApplication {
     public static void main(String[] args) {
         ApplicationContext applicationContext = ApplicationContext.getInstance();
 
-        Optional<Province> optionalProvince =
-                applicationContext.getProvinceService().findById(1L);
-        if (optionalProvince.isPresent()) {
+        CityCreationRequest request = new CityCreationRequest();
+        request.setName("اصفهان");
+        request.setProvinceId(52L);
 
-//            Province province = new Province();
-            Province province = optionalProvince.get();
-            province.setPreCode("021");
-            province.setName("تهران");
+        applicationContext.getCityService().create(request);
 
-            applicationContext.getProvinceService().save(province);
-        }
 
         applicationContext.getEntityManager().close();
     }

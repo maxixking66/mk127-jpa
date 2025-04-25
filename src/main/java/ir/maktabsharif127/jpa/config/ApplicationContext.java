@@ -74,12 +74,11 @@ public class ApplicationContext {
         return provinceService;
     }
 
-
     private CityService cityService;
 
     public CityService getCityService() {
         if (Objects.isNull(cityService)) {
-            cityService = new CityServiceImpl(getCityRepository());
+            cityService = new CityServiceImpl(getCityRepository(), getProvinceService());
         }
         return cityService;
     }

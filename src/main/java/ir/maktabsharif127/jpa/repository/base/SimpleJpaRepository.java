@@ -3,7 +3,6 @@ package ir.maktabsharif127.jpa.repository.base;
 import ir.maktabsharif127.jpa.domains.base.BaseEntity;
 import ir.maktabsharif127.jpa.domains.base.BaseEntity_;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -115,21 +114,21 @@ public abstract class SimpleJpaRepository<T extends BaseEntity<ID>, ID extends S
     public boolean existsById(ID id) {
 //        return findById(id).isPresent();
 
-//        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-//        CriteriaQuery<Long> query = cb.createQuery(Long.class);
-//        Root<T> from = query.from(getDomainClass());
-//        query.select(cb.count(from));
-//        query.where(
-//                cb.equal(from.get(BaseEntity_.ID), id)
-//        );
-//        return entityManager.createQuery(query).getSingleResult() > 0;
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = cb.createQuery(Long.class);
+        Root<T> from = query.from(getDomainClass());
+        query.select(cb.count(from));
+        query.where(
+                cb.equal(from.get(BaseEntity_.ID), id)
+        );
+        return entityManager.createQuery(query).getSingleResult() > 0;
 
-        try {
-            entityManager.getReference(getDomainClass(), id);
-            return true;
-        } catch (EntityNotFoundException e) {
-            return false;
-        }
+//        try {
+//            T reference = entityManager.getReference(getDomainClass(), id);
+//            return true;
+//        } catch (EntityNotFoundException e) {
+//            return false;
+//        }
     }
 
     @Override

@@ -36,4 +36,8 @@ public class Province extends BaseEntity<Long> {
 
 //    @ManyToOne
 //    private Address address;
+
+    public Province(Long id) {
+        setId(id);
+    }
 }
