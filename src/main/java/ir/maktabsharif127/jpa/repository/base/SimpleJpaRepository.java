@@ -132,4 +132,13 @@ public abstract class SimpleJpaRepository<T extends BaseEntity<ID>, ID extends S
         }
     }
 
+    @Override
+    public void beginTransaction() {
+        entityManager.getTransaction().begin();
+    }
+
+    @Override
+    public void commitTransaction() {
+        entityManager.getTransaction().commit();
+    }
 }

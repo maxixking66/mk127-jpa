@@ -1,4 +1,4 @@
-package ir.maktabsharif127.jpa.repository.base;
+package ir.maktabsharif127.jpa.service.base;
 
 import ir.maktabsharif127.jpa.domains.base.BaseEntity;
 
@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface CrudRepository<T extends BaseEntity<ID>, ID extends Serializable> {
+public interface BaseService<T extends BaseEntity<ID>, ID extends Serializable> {
 
     T save(T entity);
 
@@ -26,9 +26,5 @@ public interface CrudRepository<T extends BaseEntity<ID>, ID extends Serializabl
     void deleteAllById(Iterable<ID> ids);
 
     boolean existsById(ID id);
-
-    void beginTransaction();
-
-    void commitTransaction();
 
 }
