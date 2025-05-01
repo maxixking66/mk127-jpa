@@ -18,12 +18,24 @@ public class ApplicationContext {
 
     private static ApplicationContext applicationContext;
 
-    private ApplicationContext() {
+    private final String persistenceUnit;
+
+    private static final String DEFAULT_UNIT = "default";
+
+    private ApplicationContext(String persistenceUnit) {
+        this.persistenceUnit = persistenceUnit;
     }
 
     public static ApplicationContext getInstance() {
         if (Objects.isNull(applicationContext)) {
-            applicationContext = new ApplicationContext();
+            applicationContext = new ApplicationContext(DEFAULT_UNIT);
+        }
+        return applicationContext;
+    }
+
+    public static ApplicationContext getInstance(String persistenceUnit) {
+        if (Objects.isNull(applicationContext)) {
+            applicationContext = new ApplicationContext(persistenceUnit);
         }
         return applicationContext;
     }
@@ -32,7 +44,7 @@ public class ApplicationContext {
 
     public EntityManagerFactory getEntityManagerFactory() {
         if (Objects.isNull(entityManagerFactory)) {
-            entityManagerFactory = Persistence.createEntityManagerFactory("default");
+            entityManagerFactory = Persistence.createEntityManagerFactory(this.persistenceUnit);
         }
         return entityManagerFactory;
     }
@@ -82,6 +94,4 @@ public class ApplicationContext {
         }
         return cityService;
     }
-
-
 }
