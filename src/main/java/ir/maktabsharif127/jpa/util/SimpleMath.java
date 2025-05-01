@@ -7,7 +7,10 @@ public class SimpleMath {
     }
 
     public double divide(double first, double second) {
-        return 0;
+        if (second == 0) {
+            throw new ArithmeticException();
+        }
+        return first / second;
     }
 
 }

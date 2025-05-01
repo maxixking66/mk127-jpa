@@ -17,5 +17,8 @@ class SimpleMathTest {
 
     @Test
     void divide() {
+        Assertions.assertEquals(10, simpleMath.divide(20, 2));
+        Assertions.assertEquals(10, simpleMath.divide(10, 1));
+        Assertions.assertThrows(ArithmeticException.class, () -> simpleMath.divide(10, 0));
     }
 }
