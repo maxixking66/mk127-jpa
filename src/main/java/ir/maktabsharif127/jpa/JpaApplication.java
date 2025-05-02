@@ -9,10 +9,12 @@ public class JpaApplication {
     public static void main(String[] args) {
 
         Service service = getService();
-        service.test();
 
-        System.out.println(service.heavyFunction());
-        System.out.println(service.heavyFunction());
+        long start = System.currentTimeMillis();
+        service.lightFunction();
+        service.lightFunction();
+        long end = System.currentTimeMillis();
+        System.out.println(end - start);
     }
 
     private static Service getService() {
@@ -26,6 +28,8 @@ interface Service {
     void test();
 
     String heavyFunction();
+
+    void lightFunction();
 }
 
 class RealServiceImpl implements Service {
@@ -38,11 +42,17 @@ class RealServiceImpl implements Service {
     public String heavyFunction() {
         System.out.println("in real heavyFunction");
         try {
-            Thread.sleep(5000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         return "Heavy";
+    }
+
+    @Override
+    public void lightFunction() {
+        System.out.println("light function");
+        heavyFunction();
     }
 }
 
@@ -67,6 +77,11 @@ class ProxyServiceImpl implements Service {
             callAndCashHeavyFunction();
         }
         return cash.value;
+    }
+
+    @Override
+    public void lightFunction() {
+        service.lightFunction();
     }
 
     private void callAndCashHeavyFunction() {
