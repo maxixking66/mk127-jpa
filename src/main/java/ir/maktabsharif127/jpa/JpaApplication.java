@@ -6,10 +6,23 @@ public class JpaApplication {
 
     public static void main(String[] args) {
 
-        User user = getUser();
+//        User first = new User();
+//        first.setFirstName("mohsen");
+//        first.setLastName("asgari");
 
-        User clone = user.clone();
+        System.out.println(
+                User.builder()
+                        .firstName("mohsen")
+                        .lastName("asgari")
+                        .build()
+        );
 
+        System.out.println(
+                User.builder()
+                        .username("x")
+                        .password("x")
+                        .build()
+        );
 
     }
 
