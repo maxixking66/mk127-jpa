@@ -1,28 +1,19 @@
 package ir.maktabsharif127.jpa;
 
+import ir.maktabsharif127.jpa.config.ApplicationContext;
 import ir.maktabsharif127.jpa.designpatters.User;
+import ir.maktabsharif127.jpa.repository.ProvinceRepository;
 
 public class JpaApplication {
 
     public static void main(String[] args) {
 
-//        User first = new User();
-//        first.setFirstName("mohsen");
-//        first.setLastName("asgari");
 
         System.out.println(
-                User.builder()
-                        .firstName("mohsen")
-                        .lastName("asgari")
-                        .build()
+                ApplicationContext.getInstance().getBean(ProvinceRepository.class)
+                        .countAll()
         );
 
-        System.out.println(
-                User.builder()
-                        .username("x")
-                        .password("x")
-                        .build()
-        );
 
     }
 

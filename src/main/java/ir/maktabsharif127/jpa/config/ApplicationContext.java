@@ -1,17 +1,13 @@
 package ir.maktabsharif127.jpa.config;
 
-import ir.maktabsharif127.jpa.repository.CityRepository;
-import ir.maktabsharif127.jpa.repository.CityRepositoryImpl;
 import ir.maktabsharif127.jpa.repository.ProvinceRepository;
 import ir.maktabsharif127.jpa.repository.ProvinceRepositoryImpl;
-import ir.maktabsharif127.jpa.service.CityService;
-import ir.maktabsharif127.jpa.service.CityServiceImpl;
-import ir.maktabsharif127.jpa.service.ProvinceService;
-import ir.maktabsharif127.jpa.service.ProvinceServiceImpl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class ApplicationContext {
@@ -26,72 +22,55 @@ public class ApplicationContext {
         this.persistenceUnit = persistenceUnit;
     }
 
+    private final Map<Class<?>, Object> beanMap = new HashMap<>();
+
     public static ApplicationContext getInstance() {
-        if (Objects.isNull(applicationContext)) {
-            applicationContext = new ApplicationContext(DEFAULT_UNIT);
-        }
-        return applicationContext;
+//        if (Objects.isNull(applicationContext)) {
+//            applicationContext = new ApplicationContext(DEFAULT_UNIT);
+//        }
+//        return applicationContext;
+        return getInstance(DEFAULT_UNIT);
     }
 
     public static ApplicationContext getInstance(String persistenceUnit) {
         if (Objects.isNull(applicationContext)) {
             applicationContext = new ApplicationContext(persistenceUnit);
+            initializeBeansStatic(applicationContext);
+            applicationContext.initializeBeans();
         }
         return applicationContext;
     }
 
-    private EntityManagerFactory entityManagerFactory;
-
-    public EntityManagerFactory getEntityManagerFactory() {
-        if (Objects.isNull(entityManagerFactory)) {
-            entityManagerFactory = Persistence.createEntityManagerFactory(this.persistenceUnit);
-        }
-        return entityManagerFactory;
+    private static void initializeBeansStatic(ApplicationContext applicationContext) {
+//        TODO impl this
     }
 
-    private EntityManager em;
-
-    public EntityManager getEntityManager() {
-        if (Objects.isNull(em)) {
-            em = getEntityManagerFactory().createEntityManager();
-        }
-        return em;
+    private void initializeBeans() {
+        beanMap.put(EntityManagerFactory.class, createEntityManagerFactory());
+        beanMap.put(EntityManager.class, createEntityManager());
+        beanMap.put(ProvinceRepository.class, createProvinceRepository());
     }
 
-    private ProvinceRepository provinceRepository;
-
-    public ProvinceRepository getProvinceRepository() {
-        if (Objects.isNull(provinceRepository)) {
-            provinceRepository = new ProvinceRepositoryImpl(getEntityManager());
-        }
-        return provinceRepository;
+    private EntityManagerFactory createEntityManagerFactory() {
+        return Persistence.createEntityManagerFactory(this.persistenceUnit);
     }
 
-
-    private CityRepository cityRepository;
-
-    public CityRepository getCityRepository() {
-        if (Objects.isNull(cityRepository)) {
-            cityRepository = new CityRepositoryImpl(getEntityManager());
-        }
-        return cityRepository;
+    private EntityManager createEntityManager() {
+        return getBean(EntityManagerFactory.class).createEntityManager();
     }
 
-    private ProvinceService provinceService;
-
-    public ProvinceService getProvinceService() {
-        if (Objects.isNull(provinceService)) {
-            provinceService = new ProvinceServiceImpl(getProvinceRepository());
-        }
-        return provinceService;
+    private ProvinceRepository createProvinceRepository() {
+        return new ProvinceRepositoryImpl(
+                getBean(EntityManager.class)
+        );
     }
 
-    private CityService cityService;
-
-    public CityService getCityService() {
-        if (Objects.isNull(cityService)) {
-            cityService = new CityServiceImpl(getCityRepository(), getProvinceService());
+    @SuppressWarnings("unchecked")
+    public <T> T getBean(Class<T> clazz) {
+        Object o = beanMap.get(clazz);
+        if (o == null) {
+            throw new RuntimeException("no such a bean");
         }
-        return cityService;
+        return (T) o;
     }
 }
