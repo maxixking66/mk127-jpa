@@ -1,20 +1,24 @@
 package ir.maktabsharif127.jpa;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class JpaApplication {
     public static void main(String[] args) throws IOException {
 
-        Files.write(
-                Path.of("note-2.txt"), "Mohsen Asgari\nAli alavi".getBytes(StandardCharsets.UTF_8)
-        );
+        try (FileOutputStream outputStream = new FileOutputStream("note-4.txt")) {
+            outputStream.write(
+                    "Mohsen Asgari\nMat".getBytes(StandardCharsets.UTF_8)
+            );
+        }
 
-        Files.writeString(
-                Path.of("note-3.txt"), "Mohsen Asgari\nAli alavi"
-        );
+        try (FileInputStream inputStream = new FileInputStream("note-4.txt")) {
+            System.out.println(
+                    new String(inputStream.readAllBytes(), StandardCharsets.UTF_8)
+            );
+        }
 
     }
 }
