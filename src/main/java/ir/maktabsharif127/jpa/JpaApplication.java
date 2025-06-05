@@ -1,56 +1,57 @@
 package ir.maktabsharif127.jpa;
 
-import lombok.*;
+import lombok.SneakyThrows;
 
-import java.io.*;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 public class JpaApplication {
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
 
-//        writePersonObjectToFile();
-        readPersonObjectFromFile();
+    @SneakyThrows
+    public static void main(String[] args) {
+
+//        writeDataToChannel();
+        readDataFromChannel();
 
     }
 
-    private static void writePersonObjectToFile() throws IOException {
-        try (FileOutputStream fileOutputStream = new FileOutputStream("note.txt")) {
-            try (ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream)) {
-                outputStream.writeObject(
-                        Person.builder()
-                                .firstName("mohsen")
-                                .lastName("asgari")
-                                .build()
-                );
-            }
+    @SneakyThrows
+    private static void readDataFromChannel() {
+        try (FileChannel fileChannel = FileChannel.open(
+                Path.of("note-nio.txt"),
+                StandardOpenOption.READ
+        )) {
+
+            ByteBuffer byteBuffer = ByteBuffer.allocate((int) fileChannel.size());
+            fileChannel.read(byteBuffer);
+
+            byteBuffer.flip();
+
+            byte[] fileData = new byte[byteBuffer.remaining()];
+            byteBuffer.get(fileData);
+            System.out.println(
+                    new String(fileData, StandardCharsets.UTF_8)
+            );
+
         }
     }
 
-    private static void readPersonObjectFromFile() throws IOException, ClassNotFoundException {
-        try (FileInputStream fileInputStream = new FileInputStream("note.txt")) {
-            try (ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-                Person person = (Person) objectInputStream.readObject();
-                System.out.println("FirstName: " + person.getFirstName());
-                System.out.println("LastName: " + person.getLastName());
-                System.out.println(person);
-            }
+    private static void writeDataToChannel() throws IOException {
+        try (FileChannel fileChannel = FileChannel.open(
+                Path.of("note-nio.txt"),
+                StandardOpenOption.WRITE,
+                StandardOpenOption.CREATE)) {
+
+            ByteBuffer byteBuffer = ByteBuffer.wrap(
+                    "Mohsen Asgari".getBytes(StandardCharsets.UTF_8)
+            );
+
+            fileChannel.write(byteBuffer);
+
         }
     }
-}
-
-
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@Builder
-class Person implements Serializable {
-
-    private static final long serialVersionUID = -1L;
-
-    private String firstName;
-    private String lastName;
-    private String username;
-    private String password;
-    private String mobileNumber;
 }
