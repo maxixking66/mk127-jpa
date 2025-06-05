@@ -1,24 +1,56 @@
 package ir.maktabsharif127.jpa;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import lombok.*;
+
+import java.io.*;
 
 public class JpaApplication {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
 
-        try (FileOutputStream outputStream = new FileOutputStream("note-4.txt")) {
-            outputStream.write(
-                    "Mohsen Asgari\nMat".getBytes(StandardCharsets.UTF_8)
-            );
-        }
-
-        try (FileInputStream inputStream = new FileInputStream("note-4.txt")) {
-            System.out.println(
-                    new String(inputStream.readAllBytes(), StandardCharsets.UTF_8)
-            );
-        }
+//        writePersonObjectToFile();
+        readPersonObjectFromFile();
 
     }
+
+    private static void writePersonObjectToFile() throws IOException {
+        try (FileOutputStream fileOutputStream = new FileOutputStream("note.txt")) {
+            try (ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream)) {
+                outputStream.writeObject(
+                        Person.builder()
+                                .firstName("mohsen")
+                                .lastName("asgari")
+                                .build()
+                );
+            }
+        }
+    }
+
+    private static void readPersonObjectFromFile() throws IOException, ClassNotFoundException {
+        try (FileInputStream fileInputStream = new FileInputStream("note.txt")) {
+            try (ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+                Person person = (Person) objectInputStream.readObject();
+                System.out.println("FirstName: " + person.getFirstName());
+                System.out.println("LastName: " + person.getLastName());
+                System.out.println(person);
+            }
+        }
+    }
+}
+
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Builder
+class Person implements Serializable {
+
+    private static final long serialVersionUID = -1L;
+
+    private String firstName;
+    private String lastName;
+    private String username;
+    private String password;
+    private String mobileNumber;
 }
